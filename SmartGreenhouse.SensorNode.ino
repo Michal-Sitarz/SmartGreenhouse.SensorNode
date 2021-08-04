@@ -2,6 +2,9 @@
 // Smart Greenhouse System - Sensor Node //
 // ------------------------------------- //
 
+// Sensor info
+const char sensorId[] = "arduino1";
+
 // WiFi setup
 #include <WiFiNINA.h>
 #include "arduino_secrets.h"
@@ -85,21 +88,28 @@ void loop() {
   }
 
   // Prepare the string with readings
-  String msg = "Temperature: ";
-  msg.concat(trimZero(t));
-  msg.concat("°C  Humidity: ");
-  msg.concat(trimZero(h));
-  msg.concat("%");
+  String msgJson = "{ ";
+  msgJson.concat("\"AirTemperature\": ");
+  msgJson.concat(trimZero(t));
+  msgJson.concat(", \"AirHumidity\": ");
+  msgJson.concat(trimZero(h));
+  msgJson.concat(", \"SoilMoisture\": ");
+  msgJson.concat(0);
+  msgJson.concat(", \"LightIntensity\": ");
+  msgJson.concat(0);
+  msgJson.concat(", \"SensorId\": ");
+  msgJson.concat("\"");
+  msgJson.concat(sensorId);
+  msgJson.concat("\"");
+  msgJson.concat(" }");
 
 
   // Display reading in the serial console
-  Serial.println(msg);
+  Serial.println(msgJson);
 
   // Send message to the MQTT broker
   mqtt.beginMessage(topic);
-  mqtt.print(msg);
-  mqtt.print("  @  ");
-  mqtt.print(getDateTime());
+  mqtt.print(msgJson);
   mqtt.endMessage();
 
   mqtt.poll(); // <- keep the connection alive and prevent from disconnection

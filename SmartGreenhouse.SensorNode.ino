@@ -97,7 +97,7 @@ void loop() {
   msgJson.concat(0);
   msgJson.concat(", \"LightIntensity\": ");
   msgJson.concat(0);
-  msgJson.concat(", \"SensorId\": ");
+  msgJson.concat(", \"SensorNodeId\": ");
   msgJson.concat("\"");
   msgJson.concat(sensorId);
   msgJson.concat("\"");
